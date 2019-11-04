@@ -50,15 +50,6 @@ for line in arr:
         if len(line[ind]) > cell_wid[ind]:
             cell_wid[ind] = len(line[ind])
 
-# if headers are not included, remove
-if not headers:
-    arr.pop(0)
-
-# if needed, sort arr
-if sort_col >= 0 and sort_col < num_col:
-    arr.sort(key=lambda x: float(x[sort_col]) if is_number(x[sort_col]) else x[sort_col].lower(), reverse=True if is_number(arr[1][sort_col]) else False)
-elif sort_col >= 0:
-    print("Invalid sort collumn")
 
 printer = ""
 # print column letters
@@ -77,6 +68,40 @@ for ind in range(len(line)):
 printer += "|\n"
 
 line_num = 1
+# if headers are included, print, then pop
+if headers:
+    #printer += "test\n"
+    printer += "+-----"
+    for col in cell_wid:
+        printer += '+'
+        printer += '-' * (col+2)
+    printer += "+\n"
+    printer += "|" + str(line_num).rjust(5)
+    line_num += 1
+    
+    for ind in range(len(arr[0])):     
+        # print vertical line
+        printer += '| '
+        
+        # print entry
+        printer += arr[0][ind].rjust(cell_wid[ind])
+        printer += ' '
+    printer += "|\n"
+
+    #    printer += "+-----"
+    #    for col in cell_wid:
+    #        printer += '+'
+    #        printer += '-' * (col+2)
+    #    printer += "+\n"
+
+    arr.pop(0)
+
+# if needed, sort arr
+if sort_col >= 0 and sort_col < num_col:
+    arr.sort(key=lambda x: float(x[sort_col]) if is_number(x[sort_col]) else x[sort_col].lower(), reverse=True if is_number(arr[1][sort_col]) else False)
+elif sort_col >= 0:
+    print("Invalid sort collumn")
+
 # for each row in array
 for line in arr:
     # print horizontal line
