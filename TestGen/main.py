@@ -1,8 +1,8 @@
 import math
 import sys
 
-if sys.version_info[0] >= 3:
-    raise(Exception("Must be run with Python 2.X"))
+if sys.version_info[0] < 3:
+    raise(Exception("Must be run with Python 3.X"))
 
 from PIL import Image
 
@@ -10,7 +10,12 @@ numbers = False
 lines = False
 stagger = False
 
-if  "numbers" in sys.argv:
+if "help" in sys.argv:
+    print("numbers: add numbers")
+    print("lines: add lines")
+    print("stagger: stagger colors")
+    quit()
+if "numbers" in sys.argv:
     numbers = True
 if "lines" in sys.argv:
     lines = True
@@ -193,9 +198,9 @@ def WriteComma(x,y):
     pixOut[x+1,y+5] = (0,0,0)
 
 
-wide = input("Input width (in cards): ")
-high = input("Input height (in cards): ")
-pix = input("Size of cards (in pixels): ")
+wide = int(input("Input width (in cards): "))
+high = int(input("Input height (in cards): "))
+pix = int(input("Size of cards (in pixels): "))
 
 if wide > 99 or high > 99:
     raise(Exception("Signs larger than 100 cards wide or high are not supported"))
@@ -261,5 +266,15 @@ if lines:
             if i%pix == 0 or i%pix == pix-1:
                 pixOut[i,j] = (0,0,0)
 
-
-imOut.save(str(wide)+"x"+str(high)+"@"+str(pix)+ ".png")
+options = []
+if lines:
+    options.append("lines")
+if stagger:
+    options.append("stagger")
+if numbers:
+    options.append("numbers")
+if len(options) > 0:
+    options="_".join(options)
+    imOut.save(str(wide)+"x"+str(high)+"@"+str(pix)+"_"+options+ ".png")
+else:
+    imOut.save(str(wide)+"x"+str(high)+"@"+str(pix)+ ".png")
